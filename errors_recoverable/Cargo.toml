@@ -1,0 +1,6 @@
+[package]
+name = "errors_recoverable"
+version = "0.1.0"
+authors = ["Yury Tarabanko <tarabanko@mirapolis.ru>"]
+
+[dependencies]
