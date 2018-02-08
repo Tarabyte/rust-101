@@ -1,0 +1,6 @@
+[package]
+name = "collections_exercises_strings"
+version = "0.1.0"
+authors = ["Yury Tarabanko <tarabanko@mirapolis.ru>"]
+
+[dependencies]
