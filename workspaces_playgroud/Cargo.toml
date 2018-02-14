@@ -1,0 +1,10 @@
+[package]
+name = "workspaces_playgroud"
+version = "0.1.0"
+authors = ["Yury Tarabanko <tarabanko@mirapolis.ru>"]
+
+[workspace]
+
+[dependencies]
+add-one = { path = "add-one" }
+add-two = { path = "add-two" }
