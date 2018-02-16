@@ -1,7 +1,6 @@
 use std::thread;
 use std::time::Duration;
-use std::sync::mpsc::{channel, Sender};
-use std::mem::drop;
+use std::sync::mpsc::{channel, Sender, Receiver};
 
 fn main() {
     test_threads_join(10);
@@ -14,8 +13,6 @@ fn main() {
 }
 
 fn test_multiple_senders() {
-    let (tx, rx) = channel();
-
     fn report(thread_number: u64, tx: &Sender<String>) {
         let tx = Sender::clone(tx);
 
@@ -27,14 +24,21 @@ fn test_multiple_senders() {
         });
     }
 
-    report(1, &tx);
-    report(2, &tx);
+    fn spawn(num: u8) -> Receiver<String> {
+        let (tx, rx) = channel();
 
-    drop(tx);
+        for i in 1..num + 1 {
+            report(i as u64, &tx)
+        }
 
-    println!("{:?}", &rx);
+        rx
+    }
 
-    for message in rx.iter() {
+
+    let rx = spawn(3);
+
+
+    for message in rx {
         println!("Got message: `{}`", message);
     }
 }
