@@ -1,3 +1,4 @@
+extern crate hello;
 use std::net::TcpListener;
 use std::net::TcpStream;
 use std::io::prelude::*;
@@ -5,16 +6,22 @@ use std::io;
 use std::fs::File;
 use std::thread;
 use std::time::Duration;
+use hello::ThreadPool;
 
 fn main() {
     let port = 8080;
     let listener = connect(port);
+    let pool = ThreadPool::new(4);
 
 
-    for request in listener.incoming() {
+    for request in listener.incoming().take(4) {
         let stream = request.unwrap();
 
-        let _res = handle_connection(stream);
+        pool.execute(|| {
+            if let Err(e) = handle_connection(stream) {
+                println!("Unable to handle request {:?}", e);
+            }
+        });
     }
 }
 
